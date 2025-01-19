@@ -14,6 +14,7 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  bool isSignInDialogShown = false;
   late rive.RiveAnimationController _btnAnimationController;
 
   @override
@@ -45,45 +46,63 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               child: SizedBox(),
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Spacer(),
-                  SizedBox(
-                    width: 260,
-                    child: Column(
-                      children: [
-                        Text(
-                          'Learn design & code',
-                          style: TextStyle(
-                            fontSize: 60,
-                            fontFamily: 'Poppins',
-                            height: 1.2,
+          AnimatedPositioned(
+            top: isSignInDialogShown ? -50 : 0,
+            duration: const Duration(milliseconds: 240),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Spacer(),
+                    SizedBox(
+                      width: 260,
+                      child: Column(
+                        children: [
+                          Text(
+                            'Learn design & code',
+                            style: TextStyle(
+                              fontSize: 60,
+                              fontFamily: 'Poppins',
+                              height: 1.2,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                            'Don’t skip design. Learn design and code, by building real apps with Flutter and Swift. Complete courses about the best tools.')
-                      ],
+                          const SizedBox(height: 16),
+                          Text(
+                              'Don’t skip design. Learn design and code, by building real apps with Flutter and Swift. Complete courses about the best tools.')
+                        ],
+                      ),
                     ),
-                  ),
-                  const Spacer(flex: 2),
-                  AnimatedBtn(
-                    btnAnimationController: _btnAnimationController,
-                    press: () {
-                      _btnAnimationController.isActive = true;
-                    },
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
-                    child: Text(
-                      "Purchase includes access to 30+ courses, 240+ premium tutorials, 120+ hours of videos, source files and certificates.",
+                    const Spacer(flex: 2),
+                    AnimatedBtn(
+                      btnAnimationController: _btnAnimationController,
+                      press: () {
+                        _btnAnimationController.isActive = true;
+                        Future.delayed(const Duration(milliseconds: 800), () {
+                          setState(() {
+                            isSignInDialogShown = true;
+                          });
+                          if (context.mounted) {
+                            customSignInDialog(context, onClosed: (_) {
+                              setState(() {
+                                isSignInDialogShown = false;
+                              });
+                            });
+                          }
+                        });
+                      },
                     ),
-                  ),
-                ],
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24),
+                      child: Text(
+                        "Purchase includes access to 30+ courses, 240+ premium tutorials, 120+ hours of videos, source files and certificates.",
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           )

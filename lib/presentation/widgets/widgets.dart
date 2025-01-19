@@ -1,1 +1,1 @@
-export 'onboding/animated_btn.dart';
+export 'onboding/onboding.dart';
