@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
 
+import 'package:rive_flutter/presentation/presentation.dart';
+import 'package:rive_flutter/utils/utils.dart';
+
 class SignInForm extends StatefulWidget {
   const SignInForm({
     super.key,
@@ -25,12 +28,12 @@ class _SignInFormState extends State<SignInForm> {
 
   late SMITrigger confetti;
 
-  StateMachineController getRiveController(Artboard artboard) {
-    StateMachineController? controller =
-        StateMachineController.fromArtboard(artboard, 'State Machine 1');
-    artboard.addController(controller!);
-    return controller;
-  }
+  // StateMachineController getRiveController(Artboard artboard) {
+  //   StateMachineController? controller =
+  //       StateMachineController.fromArtboard(artboard, 'State Machine 1');
+  //   artboard.addController(controller!);
+  //   return controller;
+  // }
 
   void signIn(BuildContext context) {
     setState(() {
@@ -46,6 +49,16 @@ class _SignInFormState extends State<SignInForm> {
             isShowLoading = false;
           });
           confetti.fire();
+          Future.delayed(const Duration(seconds: 1), () {
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EntryPointScreen(),
+                ),
+              );
+            }
+          });
         });
       } else {
         error.fire();
@@ -151,7 +164,7 @@ class _SignInFormState extends State<SignInForm> {
                   'assets/RiveAssets/check.riv',
                   onInit: (artboard) {
                     StateMachineController controller =
-                        getRiveController(artboard);
+                        RiveUtils.getRiveController(artboard);
                     check =
                         controller.findSMI<SMITrigger>('Check') as SMITrigger;
                     error =
@@ -170,7 +183,7 @@ class _SignInFormState extends State<SignInForm> {
                     'assets/RiveAssets/confetti.riv',
                     onInit: (artboard) {
                       StateMachineController controller =
-                          getRiveController(artboard);
+                          RiveUtils.getRiveController(artboard);
                       confetti =
                           controller.findSMI('Trigger explosion') as SMITrigger;
                     },
