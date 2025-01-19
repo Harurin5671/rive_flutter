@@ -1,0 +1,1 @@
+export 'onboding/animated_btn.dart';

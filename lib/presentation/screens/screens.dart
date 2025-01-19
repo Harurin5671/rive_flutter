@@ -1,0 +1,1 @@
+export 'onboding/onboding_screen.dart';
